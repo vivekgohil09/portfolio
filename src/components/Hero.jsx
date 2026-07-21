@@ -70,14 +70,35 @@ function ShatterText({ text, baseDelay = 0 }) {
 }
 
 /* ───────────────────────────────────────────
-   Floating orbs background decoration
+   Floating orbs & code chips background
    ─────────────────────────────────────────── */
+const CODE_CHIPS = [
+  { text: '@RestController', top: '15%', left: '70%', delay: '0s' },
+  { text: 'KafkaTemplate.send()', top: '75%', left: '80%', delay: '2s' },
+  { text: 'SpringApplication.run()', top: '30%', left: '5%', delay: '1.5s' },
+  { text: '<React.Suspense />', top: '82%', left: '12%', delay: '3.5s' },
+  { text: 'SELECT * FROM postgres;', top: '65%', left: '48%', delay: '4s' },
+];
+
 function FloatingOrbs() {
   return (
     <div className="floating-orbs" aria-hidden="true">
       <div className="orb orb-1"></div>
       <div className="orb orb-2"></div>
       <div className="orb orb-3"></div>
+      {CODE_CHIPS.map((chip, idx) => (
+        <span
+          key={idx}
+          className="code-chip mono"
+          style={{
+            top: chip.top,
+            left: chip.left,
+            animationDelay: chip.delay,
+          }}
+        >
+          {chip.text}
+        </span>
+      ))}
     </div>
   );
 }
