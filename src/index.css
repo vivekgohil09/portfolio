@@ -98,7 +98,7 @@ ul {
 
 .text-huge {
   font-family: var(--font-display);
-  font-size: clamp(4rem, 12vw, 12rem);
+  font-size: clamp(3.5rem, 9.5vw, 10rem);
   line-height: 0.9;
   letter-spacing: -0.04em;
   text-transform: uppercase;
@@ -183,7 +183,7 @@ ul {
   a, button { cursor: pointer; }
 
   .text-huge {
-    font-size: clamp(2.8rem, 12vw, 6rem);
+    font-size: clamp(2rem, 9.5vw, 4.5rem);
   }
 
   .text-large {

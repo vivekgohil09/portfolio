@@ -163,14 +163,14 @@ const Hero = () => {
 
         {/* Main Shattering Title */}
         <div className="hero-titles flex flex-col justify-center">
-          <h1 className="text-huge font-display font-bold uppercase hoverable hero-title-line">
+          <h1 className="text-huge font-display font-bold uppercase hoverable hero-title-line" data-text="JAVA">
             <ShatterText text="JAVA" baseDelay={1.4} />
           </h1>
-          <div className="flex items-center gap-4 hero-title-line flex-wrap sm:flex-nowrap">
+          <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
             <span className="font-serif italic text-3xl md:text-5xl text-accent hero-accent-word whitespace-nowrap">
               <ShatterText text="(Full Stack)" baseDelay={1.8} />
             </span>
-            <h1 className="text-huge font-display font-bold uppercase hoverable">
+            <h1 className="text-huge font-display font-bold uppercase hoverable hero-title-line" data-text="DEVELOPER">
               <ShatterText text="DEVELOPER" baseDelay={2.0} />
             </h1>
           </div>
