@@ -161,9 +161,38 @@
 
   .exp-card-inner {
     padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 51, 0, 0.04) 100%);
+    border-color: rgba(255, 51, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Shimmer line effect on mobile cards */
+  .exp-card-inner::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      60deg,
+      transparent 30%,
+      rgba(255, 51, 0, 0.08) 50%,
+      transparent 70%
+    );
+    transform: rotate(30deg);
+    animation: mobile-card-shimmer 6s infinite linear;
+    pointer-events: none;
   }
 
   .exp-role {
     font-size: 1.4rem !important;
   }
+}
+
+@keyframes mobile-card-shimmer {
+  0% { transform: translateY(-100%) rotate(30deg); }
+  100% { transform: translateY(100%) rotate(30deg); }
 }

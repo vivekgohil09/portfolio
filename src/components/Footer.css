@@ -118,11 +118,23 @@
 
   .footer-huge-text {
     -webkit-text-stroke: 1px var(--text-primary);
+    animation: mobile-footer-glow 4s ease-in-out infinite alternate;
   }
 
   .footer-bottom {
     flex-direction: column;
     gap: 1rem;
     font-size: 0.75rem;
+  }
+}
+
+@keyframes mobile-footer-glow {
+  0% {
+    text-shadow: 0 0 0px transparent;
+    color: transparent;
+  }
+  100% {
+    text-shadow: 0 0 35px rgba(255, 51, 0, 0.4);
+    color: rgba(255, 51, 0, 0.15);
   }
 }
