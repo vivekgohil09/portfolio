@@ -1,0 +1,169 @@
+/* ═══════════════════════════════════════════
+   EXPERIENCE SECTION
+   ═══════════════════════════════════════════ */
+.experience-section {
+  padding: 12vh 0;
+  background-color: var(--bg-color);
+  overflow: hidden;
+}
+
+/* ── Timeline Spine ── */
+.timeline {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.timeline-track {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(-50%);
+}
+
+.timeline-glow-line {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, var(--accent-color), transparent);
+  box-shadow: 0 0 15px var(--accent-color);
+}
+
+/* ── Card positioning ── */
+.exp-card {
+  width: 45%;
+  margin-bottom: 6rem;
+  position: relative;
+}
+
+.exp-card.card-left {
+  margin-right: auto;
+  text-align: right;
+}
+
+.exp-card.card-right {
+  margin-left: auto;
+  text-align: left;
+}
+
+/* ── Card styling ── */
+.exp-card-inner {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 2.5rem;
+  position: relative;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.exp-card-inner:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 30px rgba(255, 51, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+/* ── Number badge ── */
+.exp-number {
+  position: absolute;
+  top: -1.5rem;
+  font-size: 5rem;
+  line-height: 1;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.card-left .exp-number {
+  right: 2rem;
+}
+.card-right .exp-number {
+  left: 2rem;
+}
+
+/* ── Date ── */
+.exp-date {
+  color: var(--accent-color);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Company ── */
+.exp-company {
+  color: var(--text-secondary);
+}
+
+.exp-location {
+  opacity: 0.5;
+}
+
+/* ── Tags ── */
+.exp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.card-left .exp-tags {
+  justify-content: flex-end;
+}
+
+.exp-tag {
+  padding: 4px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.exp-tag:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .experience-section {
+    padding: 8vh 0;
+  }
+
+  .timeline {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+
+  .timeline-track {
+    left: 16px;
+  }
+
+  .exp-card {
+    width: calc(100% - 44px);
+    margin-left: 44px !important;
+    margin-right: 0 !important;
+    text-align: left !important;
+    margin-bottom: 3rem;
+  }
+
+  .card-left .exp-number {
+    left: 1rem;
+    right: auto;
+    font-size: 3rem;
+  }
+  .card-right .exp-number {
+    left: 1rem;
+    font-size: 3rem;
+  }
+
+  .card-left .exp-tags {
+    justify-content: flex-start;
+  }
+
+  .exp-card-inner {
+    padding: 1.5rem;
+  }
+
+  .exp-role {
+    font-size: 1.4rem !important;
+  }
+}

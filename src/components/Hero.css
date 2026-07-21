@@ -1,0 +1,226 @@
+/* ═══════════════════════════════════════════
+   HERO SECTION
+   ═══════════════════════════════════════════ */
+.hero-section {
+  padding-top: 100px;
+  background-color: var(--bg-color);
+}
+
+/* ── Background ── */
+.hero-background {
+  position: absolute;
+  top: -10%;
+  left: -5%;
+  width: 110%;
+  height: 130%;
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 5, 5, 0.3) 0%,
+    rgba(5, 5, 5, 0.6) 50%,
+    rgba(5, 5, 5, 0.95) 100%
+  );
+}
+
+/* ── Tag ── */
+.hero-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.2em;
+}
+
+.tag-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  box-shadow: 0 0 12px var(--accent-color);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+/* ── Shattering Characters ── */
+.hero-char {
+  display: inline-block;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.hero-char.scrambling {
+  color: var(--accent-color);
+  text-shadow: 0 0 20px var(--accent-color);
+}
+
+.hero-char.revealed {
+  color: var(--text-primary);
+  text-shadow: none;
+}
+
+.hero-title-line {
+  line-height: 0.95;
+}
+
+.hero-accent-word .hero-char.scrambling {
+  color: var(--accent-color);
+}
+
+.hero-accent-word .hero-char.revealed {
+  color: var(--accent-color);
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+/* ── Footer row ── */
+.hero-footer {
+  width: 100%;
+}
+
+/* ── Scroll Indicator ── */
+.scroll-text {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.scroll-line {
+  width: 2px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.scroll-line-inner {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--accent-color);
+  animation: scroll-down 2s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+@keyframes scroll-down {
+  0% { top: -100%; }
+  50% { top: 100%; }
+  100% { top: 100%; }
+}
+
+/* ── Floating Orbs ── */
+.floating-orbs {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+}
+
+.orb-1 {
+  width: 400px;
+  height: 400px;
+  background: var(--accent-color);
+  top: 10%;
+  right: -5%;
+  animation: orb-float-1 12s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 300px;
+  height: 300px;
+  background: #7b2ff7;
+  bottom: 10%;
+  left: -5%;
+  animation: orb-float-2 15s ease-in-out infinite;
+}
+
+.orb-3 {
+  width: 200px;
+  height: 200px;
+  background: #00d4ff;
+  top: 50%;
+  left: 40%;
+  animation: orb-float-3 10s ease-in-out infinite;
+}
+
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-60px, 40px) scale(1.1); }
+  66% { transform: translate(30px, -50px) scale(0.9); }
+}
+
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, -30px) scale(1.15); }
+  66% { transform: translate(-40px, 60px) scale(0.85); }
+}
+
+@keyframes orb-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-80px, -40px) scale(1.2); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hero-section {
+    padding-top: 80px;
+    min-height: 100svh;
+  }
+
+  .hero-footer {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-top: 2rem;
+  }
+
+  .hero-desc {
+    max-width: 100% !important;
+  }
+
+  .hero-tag {
+    font-size: 0.65rem;
+  }
+
+  .hero-titles {
+    gap: 0.25rem;
+  }
+
+  .hero-title-line {
+    line-height: 0.9;
+  }
+
+  .scroll-indicator {
+    display: none;
+  }
+
+  .orb-1, .orb-2, .orb-3 {
+    opacity: 0.08;
+  }
+
+  .orb-1 { width: 200px; height: 200px; }
+  .orb-2 { width: 150px; height: 150px; }
+  .orb-3 { width: 100px; height: 100px; }
+}

@@ -1,0 +1,423 @@
+/* ===================================================
+   PROJECTS — Rich horizontal scroll design
+   =================================================== */
+
+.proj-section {
+  background: var(--bg-color);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Cursor glow follower ─── */
+.proj-cursor-glow {
+  position: fixed;
+  top: 0; left: 0;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,175,55,0.18) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 200;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+/* ─── Header ─── */
+.proj-header {
+  position: absolute;
+  top: 8vh;
+  left: 6vw;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.proj-header-label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.proj-header-title {
+  font-size: clamp(3.5rem, 8vw, 8rem);
+  font-weight: 800;
+  line-height: 0.9;
+  color: var(--text-primary);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.proj-dot {
+  color: var(--accent-color);
+}
+
+/* ─── Progress bar ─── */
+.proj-progress-track {
+  width: 180px;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  position: relative;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.proj-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), #fff9e0);
+  width: 0%;
+  transition: width 0.05s linear;
+  box-shadow: 0 0 8px rgba(212,175,55,0.6);
+}
+
+/* ─── Counter ─── */
+.proj-counter {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.proj-counter-active {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+}
+
+/* ─── Dot indicators ─── */
+.proj-dots {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.proj-dot-item {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--card-border);
+  transition: background 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.proj-dot-item.active {
+  background: var(--accent-color);
+  transform: scale(1.5);
+  box-shadow: 0 0 8px rgba(212,175,55,0.7);
+}
+
+.proj-header-sub {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.12em;
+}
+
+/* ─── Track wrapper ─── */
+.proj-track-wrap {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.proj-track {
+  display: flex;
+  align-items: center;
+  will-change: transform;
+  gap: 0;
+}
+
+.proj-spacer {
+  flex-shrink: 0;
+  width: 36vw;
+}
+
+/* ─── Card ─── */
+.proj-card {
+  flex-shrink: 0;
+  width: 62vw;
+  max-width: 860px;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 0;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  margin-right: 4vw;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: border-color 0.6s ease, box-shadow 0.6s ease;
+}
+
+.proj-card:hover {
+  border-color: var(--card-accent, var(--accent-color));
+  box-shadow:
+    0 0 40px rgba(212,175,55,0.08),
+    0 0 100px rgba(212,175,55,0.04),
+    inset 0 0 40px rgba(212,175,55,0.02);
+}
+
+/* ─── Animated corner brackets ─── */
+.proj-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--accent-color);
+  border-style: solid;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 5;
+}
+
+.proj-card:hover .proj-corner {
+  opacity: 1;
+}
+
+.proj-corner--tl {
+  top: -1px; left: -1px;
+  border-width: 2px 0 0 2px;
+  transform: translate(-4px, -4px);
+}
+
+.proj-corner--br {
+  bottom: -1px; right: -1px;
+  border-width: 0 2px 2px 0;
+  transform: translate(4px, 4px);
+}
+
+.proj-card:hover .proj-corner--tl {
+  transform: translate(0, 0);
+}
+
+.proj-card:hover .proj-corner--br {
+  transform: translate(0, 0);
+}
+
+/* ─── Image side ─── */
+.proj-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  overflow: hidden;
+}
+
+.proj-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.6) brightness(0.7);
+  transition: filter 0.8s ease, transform 0.8s ease;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.proj-card:hover .proj-img {
+  filter: saturate(1.1) brightness(0.9);
+  transform: scale(1.05);
+}
+
+.proj-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 55%, var(--card-bg) 100%);
+  pointer-events: none;
+}
+
+/* Scan line animation */
+.proj-img-scan {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(0,0,0,0.08) 3px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.proj-number {
+  position: absolute;
+  bottom: 1rem;
+  left: 1.2rem;
+  font-size: 7rem;
+  font-weight: 800;
+  color: rgba(212,175,55,0.12);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  pointer-events: none;
+  user-select: none;
+  transition: color 0.5s ease;
+}
+
+.proj-card:hover .proj-number {
+  color: rgba(212,175,55,0.2);
+}
+
+/* ─── Info side ─── */
+.proj-info {
+  padding: 2.5rem 2rem 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.proj-line {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-color), transparent);
+  transform-origin: left;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(212,175,55,0.5);
+}
+
+.proj-type {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+  opacity: 0.9;
+}
+
+.proj-title {
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+.proj-desc {
+  font-size: 0.82rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.proj-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.proj-tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
+  padding: 0.2rem 0.55rem;
+  transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease;
+}
+
+.proj-card:hover .proj-tag {
+  border-color: rgba(212,175,55,0.4);
+  color: var(--accent-color);
+  background: rgba(212,175,55,0.04);
+}
+
+/* ─── Arrow CTA ─── */
+.proj-arrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease, gap 0.3s ease;
+  cursor: none;
+}
+
+.proj-arrow-icon {
+  font-size: 1.1rem;
+  display: inline-block;
+  transition: transform 0.4s ease;
+}
+
+.proj-card:hover .proj-arrow {
+  color: var(--accent-color);
+  gap: 0.9rem;
+}
+
+.proj-card:hover .proj-arrow-icon {
+  transform: translate(4px, -4px);
+}
+
+/* ─── Active card highlight ─── */
+.proj-card--active {
+  border-color: rgba(212,175,55,0.2);
+}
+
+/* ── Mobile: vertical card stack ── */
+.proj-section--mobile {
+  overflow: visible !important;
+}
+
+.proj-section--mobile .proj-header {
+  position: relative;
+  top: auto;
+  left: auto;
+  padding: 5rem 1.25rem 1.5rem;
+  pointer-events: auto;
+}
+
+.proj-section--mobile .proj-header-title {
+  font-size: clamp(2.5rem, 12vw, 4.5rem);
+  margin-bottom: 1rem;
+}
+
+.proj-mobile-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0 1.25rem 4rem;
+}
+
+.proj-section--mobile .proj-card {
+  width: 100%;
+  max-width: 100%;
+  grid-template-columns: 1fr;
+  margin: 0;
+}
+
+.proj-section--mobile .proj-img-wrap {
+  height: 200px;
+}
+
+.proj-section--mobile .proj-img-overlay {
+  background: linear-gradient(to bottom, transparent 50%, var(--card-bg) 100%);
+}
+
+.proj-section--mobile .proj-number {
+  font-size: 3.5rem;
+  bottom: 0.5rem;
+  left: 0.75rem;
+}
+
+.proj-section--mobile .proj-info {
+  padding: 1.25rem;
+}
+
+.proj-section--mobile .proj-title {
+  font-size: 1.2rem;
+}
+
+.proj-section--mobile .proj-desc {
+  font-size: 0.78rem;
+}
+
+.proj-section--mobile .proj-tag {
+  font-size: 0.55rem;
+  padding: 0.15rem 0.4rem;
+}
+
+/* Keep old query as fallback */
+@media (max-width: 900px) {
+  .proj-cursor-glow { display: none; }
+  .proj-corner { display: none; }
+}
