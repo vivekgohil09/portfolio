@@ -353,71 +353,58 @@
   border-color: rgba(212,175,55,0.2);
 }
 
-/* ── Mobile: vertical card stack ── */
-.proj-section--mobile {
-  overflow: visible !important;
-}
-
-.proj-section--mobile .proj-header {
-  position: relative;
-  top: auto;
-  left: auto;
-  padding: 5rem 1.25rem 1.5rem;
-  pointer-events: auto;
-}
-
-.proj-section--mobile .proj-header-title {
-  font-size: clamp(2.5rem, 12vw, 4.5rem);
-  margin-bottom: 1rem;
-}
-
-.proj-mobile-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 0 1.25rem 4rem;
-}
-
-.proj-section--mobile .proj-card {
-  width: 100%;
-  max-width: 100%;
-  grid-template-columns: 1fr;
-  margin: 0;
-}
-
-.proj-section--mobile .proj-img-wrap {
-  height: 200px;
-}
-
-.proj-section--mobile .proj-img-overlay {
-  background: linear-gradient(to bottom, transparent 50%, var(--card-bg) 100%);
-}
-
-.proj-section--mobile .proj-number {
-  font-size: 3.5rem;
-  bottom: 0.5rem;
-  left: 0.75rem;
-}
-
-.proj-section--mobile .proj-info {
-  padding: 1.25rem;
-}
-
-.proj-section--mobile .proj-title {
-  font-size: 1.2rem;
-}
-
-.proj-section--mobile .proj-desc {
-  font-size: 0.78rem;
-}
-
-.proj-section--mobile .proj-tag {
-  font-size: 0.55rem;
-  padding: 0.15rem 0.4rem;
-}
-
-/* Keep old query as fallback */
+/* ── Mobile & Tablet: size adjustments for horizontal scroll ── */
 @media (max-width: 900px) {
   .proj-cursor-glow { display: none; }
   .proj-corner { display: none; }
+
+  .proj-header {
+    top: 6vh;
+    left: 5vw;
+  }
+
+  .proj-header-title {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    margin-bottom: 1rem;
+  }
+
+  .proj-progress-track {
+    width: 120px;
+  }
+
+  .proj-card {
+    width: 85vw; /* Wider relative to screen on mobile */
+    grid-template-columns: 1fr; /* Stack image and text inside the card */
+    margin-right: 6vw;
+  }
+
+  .proj-img-wrap {
+    height: 240px; /* Shorter image on mobile */
+  }
+
+  .proj-img-overlay {
+    background: linear-gradient(to bottom, transparent 50%, var(--card-bg) 100%);
+  }
+
+  .proj-number {
+    font-size: 4rem;
+    bottom: 0.5rem;
+    left: 1rem;
+  }
+
+  .proj-info {
+    padding: 1.5rem;
+  }
+
+  .proj-title {
+    font-size: 1.4rem;
+  }
+
+  .proj-desc {
+    font-size: 0.8rem;
+  }
+
+  .proj-spacer {
+    width: 10vw; /* Less spacer width on mobile */
+  }
 }

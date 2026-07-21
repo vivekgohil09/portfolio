@@ -46,13 +46,6 @@ const Projects = () => {
   const progressRef = useRef(null);
   const cursorGlowRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 900);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -68,82 +61,83 @@ const Projects = () => {
         },
       });
 
-      if (!isMobile) {
-        // =========== DESKTOP: horizontal scroll ===========
-        const totalScroll = trackRef.current.scrollWidth - window.innerWidth;
+      // =========== DESKTOP & MOBILE: horizontal scroll ===========
+      const totalScroll = trackRef.current.scrollWidth - window.innerWidth;
 
-        const hScroll = gsap.to(trackRef.current, {
-          x: -totalScroll,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: () => `+=${totalScroll + window.innerHeight}`,
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-            onUpdate: self => {
-              if (progressRef.current) {
-                progressRef.current.style.width = `${self.progress * 100}%`;
-              }
-              const idx = Math.min(
-                projects.length - 1,
-                Math.floor(self.progress * projects.length)
-              );
-              setActiveIndex(idx);
-            },
+      const hScroll = gsap.to(trackRef.current, {
+        x: -totalScroll,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: () => `+=${totalScroll + window.innerHeight}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          onUpdate: self => {
+            if (progressRef.current) {
+              progressRef.current.style.width = `${self.progress * 100}%`;
+            }
+            const idx = Math.min(
+              projects.length - 1,
+              Math.floor(self.progress * projects.length)
+            );
+            setActiveIndex(idx);
           },
-        });
+        },
+      });
 
-        // Per-card desktop animations
-        cardRefs.current.forEach((card) => {
-          if (!card) return;
+      // Per-card animations
+      cardRefs.current.forEach((card) => {
+        if (!card) return;
 
-          // Image parallax
-          const img = card.querySelector('.proj-img');
-          gsap.fromTo(img,
-            { scale: 1.12 },
-            {
-              scale: 1, ease: 'none',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top top',
-                end: () => `+=${totalScroll + window.innerHeight}`,
-                scrub: true,
-              },
-            }
-          );
+        // Image parallax
+        const img = card.querySelector('.proj-img');
+        gsap.fromTo(img,
+          { scale: 1.12 },
+          {
+            scale: 1, ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top top',
+              end: () => `+=${totalScroll + window.innerHeight}`,
+              scrub: true,
+            },
+          }
+        );
 
-          // Card entrance
-          gsap.fromTo(card,
-            { y: 60, opacity: 0 },
-            {
-              y: 0, opacity: 1, duration: 1.1, ease: 'power3.out',
-              scrollTrigger: { trigger: card, containerAnimation: hScroll, start: 'left 90%' },
-            }
-          );
+        // Card entrance
+        gsap.fromTo(card,
+          { y: 60, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 1.1, ease: 'power3.out',
+            scrollTrigger: { trigger: card, containerAnimation: hScroll, start: 'left 90%' },
+          }
+        );
 
-          // Gold line draw
-          const line = card.querySelector('.proj-line');
-          gsap.fromTo(line,
-            { scaleX: 0 },
-            {
-              scaleX: 1, duration: 0.9, ease: 'power3.out',
-              scrollTrigger: { trigger: card, containerAnimation: hScroll, start: 'left 80%' },
-            }
-          );
+        // Gold line draw
+        const line = card.querySelector('.proj-line');
+        gsap.fromTo(line,
+          { scaleX: 0 },
+          {
+            scaleX: 1, duration: 0.9, ease: 'power3.out',
+            scrollTrigger: { trigger: card, containerAnimation: hScroll, start: 'left 80%' },
+          }
+        );
 
-          // Text stagger reveal
-          const texts = card.querySelectorAll('.proj-reveal');
-          gsap.fromTo(texts,
-            { y: 36, opacity: 0 },
-            {
-              y: 0, opacity: 1, stagger: 0.09, duration: 0.9, ease: 'power3.out',
-              scrollTrigger: { trigger: card, containerAnimation: hScroll, start: 'left 70%' },
-            }
-          );
+        // Text stagger reveal
+        const texts = card.querySelectorAll('.proj-reveal');
+        gsap.fromTo(texts,
+          { y: 36, opacity: 0 },
+          {
+            y: 0, opacity: 1, stagger: 0.09, duration: 0.9, ease: 'power3.out',
+            scrollTrigger: { trigger: card, containerAnimation: hScroll, start: 'left 70%' },
+          }
+        );
 
-          // 3D tilt on hover
+        // 3D tilt on hover (using matchMedia for cursor/tilt)
+        const isTouch = window.matchMedia("(hover: none)").matches;
+        if (!isTouch) {
           const onMove = e => {
             const rect = card.getBoundingClientRect();
             const dx = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
@@ -167,117 +161,12 @@ const Projects = () => {
           };
           card.addEventListener('mousemove', onMove);
           card.addEventListener('mouseleave', onLeave);
-        });
-      } else {
-        // =========== MOBILE: cinematic vertical effects ===========
-        cardRefs.current.forEach((card, i) => {
-          if (!card) return;
-
-          // Card entrance — clip-path wipe reveal + rotation + scale
-          gsap.fromTo(card,
-            {
-              clipPath: 'inset(100% 0% 0% 0%)',
-              opacity: 0,
-              y: 80,
-              rotateX: 12,
-              scale: 0.92,
-            },
-            {
-              clipPath: 'inset(0% 0% 0% 0%)',
-              opacity: 1,
-              y: 0,
-              rotateX: 0,
-              scale: 1,
-              duration: 1.2,
-              ease: 'power4.out',
-              scrollTrigger: { trigger: card, start: 'top 88%' },
-            }
-          );
-
-          // Image zoom-in reveal
-          const img = card.querySelector('.proj-img');
-          gsap.fromTo(img,
-            { scale: 1.35, filter: 'brightness(0.3) saturate(0)' },
-            {
-              scale: 1,
-              filter: 'brightness(0.75) saturate(0.7)',
-              duration: 1.6,
-              ease: 'power2.out',
-              scrollTrigger: { trigger: card, start: 'top 82%' },
-            }
-          );
-
-          // Number counter pulse
-          const num = card.querySelector('.proj-number');
-          gsap.fromTo(num,
-            { scale: 0.5, opacity: 0 },
-            {
-              scale: 1, opacity: 0.15,
-              duration: 1,
-              ease: 'elastic.out(1, 0.6)',
-              scrollTrigger: { trigger: card, start: 'top 80%' },
-            }
-          );
-
-          // Gold line — draw-in with glow pulse
-          const line = card.querySelector('.proj-line');
-          gsap.fromTo(line,
-            { scaleX: 0, boxShadow: '0 0 0px rgba(212,175,55,0)' },
-            {
-              scaleX: 1,
-              boxShadow: '0 0 16px rgba(212,175,55,0.6)',
-              duration: 0.9,
-              ease: 'power3.out',
-              scrollTrigger: { trigger: card, start: 'top 75%' },
-            }
-          );
-
-          // Text stagger reveal with slight x-offset per line
-          const texts = card.querySelectorAll('.proj-reveal');
-          gsap.fromTo(texts,
-            { y: 28, x: -12, opacity: 0, filter: 'blur(4px)' },
-            {
-              y: 0, x: 0, opacity: 1, filter: 'blur(0px)',
-              stagger: 0.1,
-              duration: 0.85,
-              ease: 'power3.out',
-              scrollTrigger: { trigger: card, start: 'top 72%' },
-            }
-          );
-
-          // Tags pop-in one by one
-          const tags = card.querySelectorAll('.proj-tag');
-          gsap.fromTo(tags,
-            { scale: 0, opacity: 0 },
-            {
-              scale: 1, opacity: 1,
-              stagger: 0.06,
-              duration: 0.5,
-              ease: 'back.out(2)',
-              scrollTrigger: { trigger: card, start: 'top 65%' },
-            }
-          );
-
-          // Border glow animation on scroll-through
-          gsap.fromTo(card,
-            { borderColor: 'rgba(212,175,55,0)' },
-            {
-              borderColor: 'rgba(212,175,55,0.3)',
-              duration: 0.6,
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 60%',
-                end: 'bottom 40%',
-                toggleActions: 'play reverse play reverse',
-              },
-            }
-          );
-        });
-      }
+        }
+      });
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [isMobile]);
+  }, []);
 
   // ========== JSX ==========
   const renderCard = (proj, i) => (
@@ -293,7 +182,7 @@ const Projects = () => {
       <div className="proj-img-wrap">
         <img src={proj.image} alt={proj.title} className="proj-img" />
         <div className="proj-img-overlay" />
-        {!isMobile && <div className="proj-img-scan" />}
+        <div className="proj-img-scan" />
         <span className="proj-number font-display">{proj.num}</span>
       </div>
 
@@ -312,8 +201,8 @@ const Projects = () => {
   );
 
   return (
-    <section ref={sectionRef} className={`proj-section ${isMobile ? 'proj-section--mobile' : ''}`}>
-      {!isMobile && <div ref={cursorGlowRef} className="proj-cursor-glow" />}
+    <section ref={sectionRef} className="proj-section">
+      <div ref={cursorGlowRef} className="proj-cursor-glow" />
 
       {/* Section Header */}
       <div ref={titleRef} className="proj-header">
@@ -322,42 +211,30 @@ const Projects = () => {
           Projects<span className="proj-dot">.</span>
         </h2>
 
-        {!isMobile && (
-          <>
-            <div className="proj-progress-track">
-              <div ref={progressRef} className="proj-progress-fill" />
-            </div>
-            <p className="proj-counter mono">
-              <span className="proj-counter-active">{String(activeIndex + 1).padStart(2, '0')}</span>
-              <span className="proj-counter-sep"> / </span>
-              {String(projects.length).padStart(2, '0')}
-            </p>
-            <div className="proj-dots">
-              {projects.map((_, i) => (
-                <div key={i} className={`proj-dot-item ${i === activeIndex ? 'active' : ''}`} />
-              ))}
-            </div>
-            <p className="proj-header-sub">Scroll to explore →</p>
-          </>
-        )}
+        <div className="proj-progress-track">
+          <div ref={progressRef} className="proj-progress-fill" />
+        </div>
+        <p className="proj-counter mono">
+          <span className="proj-counter-active">{String(activeIndex + 1).padStart(2, '0')}</span>
+          <span className="proj-counter-sep"> / </span>
+          {String(projects.length).padStart(2, '0')}
+        </p>
+        <div className="proj-dots">
+          {projects.map((_, i) => (
+            <div key={i} className={`proj-dot-item ${i === activeIndex ? 'active' : ''}`} />
+          ))}
+        </div>
+        <p className="proj-header-sub">Scroll to explore →</p>
       </div>
 
-      {/* Cards */}
-      {isMobile ? (
-        // MOBILE: simple vertical list
-        <div className="proj-mobile-list">
+      {/* Cards - unified track rendering */}
+      <div className="proj-track-wrap">
+        <div ref={trackRef} className="proj-track">
+          <div className="proj-spacer" />
           {projects.map((proj, i) => renderCard(proj, i))}
+          <div className="proj-spacer" />
         </div>
-      ) : (
-        // DESKTOP: horizontal scroll track
-        <div className="proj-track-wrap">
-          <div ref={trackRef} className="proj-track">
-            <div className="proj-spacer" />
-            {projects.map((proj, i) => renderCard(proj, i))}
-            <div className="proj-spacer" />
-          </div>
-        </div>
-      )}
+      </div>
     </section>
   );
 };
