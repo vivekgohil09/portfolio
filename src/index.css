@@ -227,11 +227,18 @@ ul {
 .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
 .flex-wrap { flex-wrap: wrap; }
 .flex-shrink-0 { flex-shrink: 0; }
-.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-
 @media (min-width: 640px) {
   .sm\:flex-nowrap { flex-wrap: nowrap; }
 }
 @media (min-width: 768px) {
   .md\:text-5xl { font-size: 3rem; }
+}
+
+/* Mobile Haptic & Touch Active VFX */
+@media (max-width: 768px) {
+  a:active, button:active, .hoverable:active, .proj-card:active, .exp-card-inner:active {
+    transform: scale(0.97) !important;
+    transition: transform 0.1s ease !important;
+    filter: brightness(1.2);
+  }
 }

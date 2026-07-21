@@ -54,7 +54,36 @@
 }
 
 @media (max-width: 768px) {
+  .header {
+    height: 70px;
+    padding: 0 1rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(5, 5, 5, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    mix-blend-mode: normal;
+  }
+
   .header-status {
+    display: flex;
+    font-size: 0.65rem;
+    background: rgba(0, 255, 0, 0.08);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .time-divider,
+  .header-status text-time {
     display: none;
+  }
+
+  .contact-btn {
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    box-shadow: 0 0 15px rgba(255, 51, 0, 0.4);
   }
 }
