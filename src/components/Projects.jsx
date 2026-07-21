@@ -11,30 +11,93 @@ const projects = [
     num: '01',
     title: 'E-Commerce Microservices',
     type: 'Spring Boot & Kafka',
-    desc: 'Scalable microservices architecture with event-driven Kafka pipelines, REST APIs, and distributed order management.',
-    tags: ['Java', 'Spring Boot', 'Kafka', 'MySQL'],
-    image: '/proj_ecommerce.png',
-    color: '#D4AF37',
+    desc: 'Scalable event-driven microservices architecture built with Java Spring Boot, Apache Kafka event streams, and distributed MySQL transaction management.',
+    tags: ['Java 17', 'Spring Boot', 'Kafka', 'MySQL', 'Docker'],
+    badge: 'EVENT-DRIVEN BACKEND',
+    filename: 'OrderService.java',
+    code: `
+@RestController
+@RequestMapping("/api/v1/orders")
+public class OrderController {
+
+    @Autowired
+    private KafkaTemplate<String, OrderEvent> kafkaTemplate;
+
+    @PostMapping("/checkout")
+    public ResponseEntity<OrderStatus> processOrder(@Valid @RequestBody OrderRequest req) {
+        OrderEvent event = new OrderEvent(req.getId(), "CREATED", System.currentTimeMillis());
+        kafkaTemplate.send("order-topic", event);
+        return ResponseEntity.accepted().body(new OrderStatus("PROCESSING"));
+    }
+}`.trim(),
+    color: '#ff3300',
   },
   {
     id: 2,
     num: '02',
-    title: 'Financial Aggregator',
-    type: 'Java & PostgreSQL',
-    desc: 'Real-time financial data aggregation platform with secure data pipelines, PostgreSQL optimization, and analytics endpoints.',
-    tags: ['Java', 'PostgreSQL', 'REST API', 'Data Pipelines'],
-    image: '/proj_finance.png',
-    color: '#C8A96E',
+    title: 'Financial Aggregator API',
+    type: 'Java 17 & PostgreSQL',
+    desc: 'High-performance financial data pipeline API for processing multi-exchange transaction records with optimized PostgreSQL queries and analytics caching.',
+    tags: ['Java 17', 'PostgreSQL', 'Spring Data JPA', 'REST API', 'Redis'],
+    badge: 'HIGH-PERFORMANCE DATA PIPELINE',
+    filename: 'TransactionPipeline.java',
+    code: `
+@Service
+@Transactional
+public class TransactionPipelineService {
+
+    @Cacheable(value = "financialSummary", key = "#accountNo")
+    public AccountAnalytics getAggregatedSummary(String accountNo) {
+        List<Record> records = repository.findTop1000ByAccountNoOrderByTimestampDesc(accountNo);
+        return AnalyticsEngine.compute(records);
+    }
+}`.trim(),
+    color: '#00d4ff',
   },
   {
     id: 3,
     num: '03',
-    title: 'Real-Time Chat',
+    title: 'Real-Time WebSockets Engine',
     type: 'Spring WebSockets & Redis',
-    desc: 'Low-latency messaging system using Spring WebSockets, Redis pub/sub channels, and JWT authentication.',
-    tags: ['Spring Boot', 'WebSockets', 'Redis', 'JWT'],
-    image: '/proj_chat.png',
-    color: '#E8C97A',
+    desc: 'Low-latency distributed messaging system built using Spring WebSockets, Redis Pub/Sub multi-node broadcasting, and JWT authorization interceptors.',
+    tags: ['Spring Boot', 'WebSockets', 'Redis Pub/Sub', 'JWT', 'Java'],
+    badge: 'LOW-LATENCY CHAT ENGINE',
+    filename: 'WebSocketHandler.java',
+    code: `
+@Component
+public class RealtimeChatHandler extends TextWebSocketHandler {
+
+    @Autowired
+    private RedisPublisher redisPublisher;
+
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) {
+        ChatMessage msg = parseJwtAndMessage(session, message);
+        redisPublisher.publish("chat-channel", msg);
+    }
+}`.trim(),
+    color: '#7b2ff7',
+  },
+  {
+    id: 4,
+    num: '04',
+    title: 'Distributed Job Scheduler',
+    type: 'Java & RabbitMQ',
+    desc: 'Fault-tolerant distributed background task executor handling deferred job processing, dead-letter queues, and real-time Prometheus execution metrics.',
+    tags: ['Java', 'RabbitMQ', 'Spring Quartz', 'Prometheus', 'REST'],
+    badge: 'DISTRIBUTED QUEUE SYSTEM',
+    filename: 'JobWorker.java',
+    code: `
+@RabbitListener(queues = "\${queue.jobs}")
+public void executeBackgroundWorker(JobPayload payload) {
+    try {
+        jobRunner.execute(payload.getTask());
+        metrics.increment("jobs.success");
+    } catch (Exception e) {
+        deadLetterQueue.dispatch(payload);
+    }
+}`.trim(),
+    color: '#00ff88',
   },
 ];
 
@@ -91,21 +154,6 @@ const Projects = () => {
       cardRefs.current.forEach((card) => {
         if (!card) return;
 
-        // Image parallax
-        const img = card.querySelector('.proj-img');
-        gsap.fromTo(img,
-          { scale: 1.12 },
-          {
-            scale: 1, ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top top',
-              end: () => `+=${totalScroll + window.innerHeight}`,
-              scrub: true,
-            },
-          }
-        );
-
         // Card entrance
         gsap.fromTo(card,
           { y: 60, opacity: 0 },
@@ -115,7 +163,7 @@ const Projects = () => {
           }
         );
 
-        // Gold line draw
+        // Accent line draw
         const line = card.querySelector('.proj-line');
         gsap.fromTo(line,
           { scaleX: 0 },
@@ -135,7 +183,7 @@ const Projects = () => {
           }
         );
 
-        // 3D tilt on hover (using matchMedia for cursor/tilt)
+        // 3D tilt on hover (desktop only)
         const isTouch = window.matchMedia("(hover: none)").matches;
         if (!isTouch) {
           const onMove = e => {
@@ -168,7 +216,7 @@ const Projects = () => {
     return () => ctx.revert();
   }, []);
 
-  // ========== JSX ==========
+  // ========== JSX Render Card ==========
   const renderCard = (proj, i) => (
     <div
       key={proj.id}
@@ -179,16 +227,30 @@ const Projects = () => {
       <div className="proj-corner proj-corner--tl" />
       <div className="proj-corner proj-corner--br" />
 
-      <div className="proj-img-wrap">
-        <img src={proj.image} alt={proj.title} className="proj-img" />
-        <div className="proj-img-overlay" />
-        <div className="proj-img-scan" />
+      {/* Cyber Code Terminal Window instead of plain image */}
+      <div className="proj-terminal-wrap">
+        <div className="proj-terminal-header">
+          <div className="proj-terminal-dots">
+            <span className="dot dot-red" />
+            <span className="dot dot-yellow" />
+            <span className="dot dot-green" />
+          </div>
+          <span className="proj-terminal-file mono">{proj.filename}</span>
+          <span className="proj-terminal-badge mono">{proj.badge}</span>
+        </div>
+        <div className="proj-terminal-body mono">
+          <pre className="proj-code-content">
+            <code>{proj.code}</code>
+          </pre>
+        </div>
+        <div className="proj-terminal-glow" style={{ background: `radial-gradient(circle, ${proj.color}22 0%, transparent 70%)` }} />
         <span className="proj-number font-display">{proj.num}</span>
       </div>
 
+      {/* Info Side */}
       <div className="proj-info">
-        <div className="proj-line proj-reveal" />
-        <p className="proj-type mono proj-reveal">{proj.type}</p>
+        <div className="proj-line proj-reveal" style={{ background: `linear-gradient(90deg, ${proj.color}, transparent)` }} />
+        <p className="proj-type mono proj-reveal" style={{ color: proj.color }}>{proj.type}</p>
         <h3 className="proj-title font-display proj-reveal">{proj.title}</h3>
         <p className="proj-desc proj-reveal">{proj.desc}</p>
         <div className="proj-tags proj-reveal">
@@ -206,7 +268,7 @@ const Projects = () => {
 
       {/* Section Header */}
       <div ref={titleRef} className="proj-header">
-        <span className="proj-header-label mono">Selected Work</span>
+        <span className="proj-header-label mono">Selected Architecture</span>
         <h2 className="proj-header-title font-display">
           Projects<span className="proj-dot">.</span>
         </h2>

@@ -196,67 +196,87 @@
   transform: translate(0, 0);
 }
 
-/* ─── Image side ─── */
-.proj-img-wrap {
+/* ─── Cyber Code Terminal Window ─── */
+.proj-terminal-wrap {
   position: relative;
   width: 100%;
   height: 520px;
+  background: #09090b;
+  border-right: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
-.proj-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.6) brightness(0.7);
-  transition: filter 0.8s ease, transform 0.8s ease;
-  transform-origin: center center;
-  will-change: transform;
+.proj-terminal-header {
+  height: 40px;
+  background: #121215;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  flex-shrink: 0;
 }
 
-.proj-card:hover .proj-img {
-  filter: saturate(1.1) brightness(0.9);
-  transform: scale(1.05);
+.proj-terminal-dots {
+  display: flex;
+  gap: 6px;
 }
 
-.proj-img-overlay {
+.proj-terminal-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.proj-terminal-file {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+}
+
+.proj-terminal-badge {
+  font-size: 0.58rem;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--card-accent, var(--accent-color));
+  border-radius: 4px;
+}
+
+.proj-terminal-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+.proj-code-content {
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #d4d4d4;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-mono);
+}
+
+.proj-terminal-glow {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, transparent 55%, var(--card-bg) 100%);
   pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+  transition: opacity 0.5s ease;
 }
 
-/* Scan line animation */
-.proj-img-scan {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 3px,
-    rgba(0,0,0,0.08) 3px,
-    rgba(0,0,0,0.08) 4px
-  );
-  pointer-events: none;
-  opacity: 0.4;
-}
-
-.proj-number {
-  position: absolute;
-  bottom: 1rem;
-  left: 1.2rem;
-  font-size: 7rem;
-  font-weight: 800;
-  color: rgba(212,175,55,0.12);
-  line-height: 1;
-  letter-spacing: -0.06em;
-  pointer-events: none;
-  user-select: none;
-  transition: color 0.5s ease;
-}
-
-.proj-card:hover .proj-number {
-  color: rgba(212,175,55,0.2);
+.proj-card:hover .proj-terminal-glow {
+  opacity: 1;
 }
 
 /* ─── Info side ─── */
@@ -373,17 +393,20 @@
   }
 
   .proj-card {
-    width: 85vw; /* Wider relative to screen on mobile */
-    grid-template-columns: 1fr; /* Stack image and text inside the card */
+    width: 88vw; /* Wider relative to screen on mobile */
+    grid-template-columns: 1fr; /* Stack code and text inside the card */
     margin-right: 6vw;
   }
 
-  .proj-img-wrap {
-    height: 240px; /* Shorter image on mobile */
+  .proj-terminal-wrap {
+    height: 280px; /* Compact code terminal on mobile */
+    border-right: none;
+    border-bottom: 1px solid var(--card-border);
   }
 
-  .proj-img-overlay {
-    background: linear-gradient(to bottom, transparent 50%, var(--card-bg) 100%);
+  .proj-code-content {
+    font-size: 0.65rem;
+    line-height: 1.5;
   }
 
   .proj-number {
